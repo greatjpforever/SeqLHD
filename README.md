@@ -1,6 +1,8 @@
-# Sequentially enlarged Latin hypercube design
+# Sequentially refined Latin hypercube designs with flexibly and adaptively chosen sample sizes
 
-This project provides several algorithms for generating Latin Hypercube Designs (LHD). These algorithms can help you generate uniformly distributed sample points, which are useful for experimental design, parameter optimization, and computer simulations.
+This project includes 'main_compare_rmse.m' for conducting numerical experiments to assess the quality of various sequential designs, as well as multiple algorithms for generating Latin Hypercube Designs (LHD).
+These algorithms can help you generate uniformly distributed sample points, which are useful for experimental design, parameter optimization, and computer simulations.
+Let's now shift our focus to these specific algorithms.
 
 ## Algorithm List
 
@@ -55,36 +57,6 @@ disp(D1)
     0.0619    0.1280
 ```
 
-### Sequentially generate a LHD with two stages
-
-**In this way, we use seqlhd_alg1 and seqlhd_alg3 to generate a two-stage Latin hypercube design;**
-**n2 needs to be greater than m1;**
-
-```matlab
-% generate the first stage using seqlhd_alg1
-n1 = 3;
-d = 2;
-E1 = seqlhd_alg1(n1, d); % m1 wsill default to ceil(n1/5)+2=2
-disp(E1);
->>
-    0.7041    0.9146
-    0.4799    0.1135
-    0.1595    0.3777
-
-% generate the second stage using seqlhd_alg2 
-n2 = 4; % n2 need be greater than m1
-E2 = seqlhd_alg3(E1, n2);
-disp(E2);
->>
-    0.7041    0.9146
-    0.4799    0.1135
-    0.1595    0.3777
-    0.0811    0.6390
-    0.3107    0.7976
-    0.9810    0.5144
-    0.8452    0.2771
-```
-
 ### Sequentially generate a LHD with three stages
 
 In this way, we use seqlhd_alg1, seqlhd_alg2 and seqlhd_alg3 to generate a three-stage Latin hypercube design;
@@ -103,9 +75,9 @@ disp(E1);
     0.4546    0.2800
     0.9102    0.6921
 
-% extend E1 using seqlhd_alg3
+% extend E1 using seqlhd_alg2
 n2 = 3; % n2 need be greater than m1 
-E2 = seqlhd_alg3(E1, n2, m1);
+E2 = seqlhd_alg2(E1, n2, m1);
 disp(E2);
 >>
     0.4546    0.2800
@@ -114,10 +86,10 @@ disp(E2);
     0.7641    0.4324
     0.1353    0.9372
 
-% extend E2 using seqlhd_alg2
-% n3 need be greater than n1+n2+m2, because 1/n1+1/(n1+m2)>3/(n1+n2)
-n3 = 7; 
-E3 = seqlhd_alg2(E2,n3)
+% extend E2 using seqlhd_alg3
+% n3 need be greater than n1+n2, because 1/n1+1/(n1+m2)>3/(n1+n2)
+n3 = 19; 
+E3 = seqlhd_alg3(E2,n3)
 disp(E3);
     0.4546    0.2800
     0.9102    0.6921
@@ -144,6 +116,36 @@ disp(E3);
     0.6763    0.5720
     0.6238    0.7921
 
+```
+
+### Alternative use: Sequentially generate a LHD with two stages
+
+**In this way, we use seqlhd_alg1 and seqlhd_alg3 to generate a two-stage Latin hypercube design;**
+**n2 needs to be greater than m1;**
+
+```matlab
+% generate the first stage using seqlhd_alg1
+n1 = 3;
+d = 2;
+E1 = seqlhd_alg1(n1, d); % m1=ceil(n1/5)+2=2
+disp(E1);
+>>
+    0.7041    0.9146
+    0.4799    0.1135
+    0.1595    0.3777
+
+% generate the second stage using seqlhd_alg3 
+n2 = 4; % n2 need be greater than m1
+E2 = seqlhd_alg3(E1, n2);
+disp(E2);
+>>
+    0.7041    0.9146
+    0.4799    0.1135
+    0.1595    0.3777
+    0.0811    0.6390
+    0.3107    0.7976
+    0.9810    0.5144
+    0.8452    0.2771
 ```
 
 ### Notes
